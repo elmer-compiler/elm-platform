@@ -178,10 +178,17 @@ makeRepos artifactDirectory version repos =
 
     return ()
 
+repoUrl :: String -> String
+repoUrl projectName =
+  case projectName of
+    "elm-compiler" -> "https://github.com/elmer-compiler/elmer-json-compiler.git"
+    _ -> "https://github.com/elm-lang/" ++ projectName ++ ".git" 
+
+
 makeRepo :: FilePath -> String -> String -> IO ()
 makeRepo root projectName version =
   do  -- get the right version of the repo
-    git [ "clone", "https://github.com/elm-lang/" ++ projectName ++ ".git" ]
+    git [ "clone", repoUrl projectName, projectName ]
     setCurrentDirectory projectName
     git [ "checkout", version, "--quiet" ]
 
